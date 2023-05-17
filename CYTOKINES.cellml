@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model name="Cytokine" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <import xlink:href="hatakeyama_2003.cellml">
+        <component component_ref="ERK" name="ERK"/>
+    </import>
+    <!--
+*******************************************************
+***         U   N   I   T   S                       ***
+*******************************************************
+-->
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nm">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="liter"/>
+    </units>
+    <units name="first_order_rate_constant">
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="second_order_rate_constant">
+        <unit units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="flux">
+        <unit units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <!--
+*********************************************************
+***       C   O   M   P   O   N   E   N   T   S       ***
+*********************************************************
+-->
+    <component name="environment">
+        <variable name="time" public_interface="out" units="s"/>
+    </component>
+    <component name="cytokines">
+        <variable name="time" public_interface="in" units="s"/>
+        <!--   var{ERK_ERKPP} ERKPP: nm {pub: in};-->
+        <variable name="ERKPP_normalised" public_interface="in" units="nm"/>
+        <variable initial_value="0" name="ERKPP_n" public_interface="out" units="nm"/>
+        <variable name="kf29" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="J29" public_interface="out" units="flux"/>
+        <variable name="J30" units="flux"/>
+        <variable initial_value="0" name="TNF" public_interface="out" units="nm"/>
+        <variable name="kf31" public_interface="in" units="first_order_rate_constant"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>J29</ci>
+                <apply>
+                    <times/>
+                    <ci>kf29</ci>
+                    <ci>ERKPP_normalised</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J30</ci>
+                <apply>
+                    <times/>
+                    <ci>kf31</ci>
+                    <ci>TNF</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>ERKPP_n</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J30</ci>
+                    <ci>J29</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>TNF</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J29</ci>
+                    <ci>J30</ci>
+                </apply>
+            </apply>
+        </math>
+    </component>
+    <connection>
+        <map_components component_1="environment" component_2="cytokines"/>
+        <map_variables variable_1="time" variable_2="time"/>
+    </connection>
+    <connection>
+        <map_components component_1="environment" component_2="ERK"/>
+        <map_variables variable_1="time" variable_2="time"/>
+    </connection>
+    <connection>
+        <map_components component_1="cytokines" component_2="ERK"/>
+        <map_variables variable_1="ERKPP_normalised" variable_2="ERKPP_normalised"/>
+    </connection>
+</model>

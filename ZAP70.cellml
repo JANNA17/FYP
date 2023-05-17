@@ -1,0 +1,266 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model name="ZAP70" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#">
+    <!--
+*******************************************************
+***         U   N   I   T   S                       ***
+*******************************************************
+-->
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nm">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="liter"/>
+    </units>
+    <units name="flux">
+        <unit units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="second_order_rate_constant">
+        <unit exponent="-1" units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="first_order_rate_constant">
+        <unit exponent="-1" units="s"/>
+    </units>
+    <!--
+*********************************************************
+***       C   O   M   P   O   N   E   N   T   S       ***
+*********************************************************
+-->
+    <component name="environment">
+        <variable name="time" public_interface="out" units="s"/>
+    </component>
+    <component name="DAP12">
+        <variable name="time" public_interface="in" units="s"/>
+        <!--var J2: flux {pub: out};-->
+        <variable name="J3" public_interface="out" units="flux"/>
+        <variable name="J4" units="flux"/>
+        <variable name="J5" units="flux"/>
+        <variable name="J6" public_interface="out" units="flux"/>
+        <variable name="J7" public_interface="out" units="flux"/>
+        <!--   var J8: flux {pub: out};
+   var J9: flux;
+   var J10: flux {pub: out};
+   var J11: flux;
+    var J12: flux {pub: out};-->
+        <!--  var J13: flux {pub: out};-->
+        <variable name="kf3" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kb3" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kf4" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kb4" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kf5" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kb5" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kf6" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kb6" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kf7" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="DAP12" public_interface="in" units="nm"/>
+        <variable initial_value="2083.33" name="plck" units="nm"/>
+        <variable initial_value="120000" name="zap70" units="nm"/>
+        <!-- var hCdS2: nm {pub: in};-->
+        <variable name="hCdS2DAP12" public_interface="in" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12" units="nm"/>
+        <variable initial_value="0" name="lck" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12_zap70" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12_pzap70" units="nm"/>
+        <variable initial_value="0" name="pzap70" public_interface="out" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12_2_pzap70" public_interface="out" units="nm"/>
+        <!--       var kf8: second_order_rate_constant {init: 0.1};
+       var kb8: first_order_rate_constant {init: 1};
+       var kf9: first_order_rate_constant {init: 20};
+       var kb9: first_order_rate_constant {init: 5};
+       var kf10: first_order_rate_constant {init: 60};
+        var kb10: first_order_rate_constant {init: 546};
+        var kf11: first_order_rate_constant {init: 2040};
+        var kb11: second_order_rate_constant {init: 15700};
+        var kf12: first_order_rate_constant {init: 40.8};
+        var kb12: second_order_rate_constant {init: 0};
+        var V13: flux {init: 0.0154};
+       var k13: nm {init: 340};
+        var Shc: nm {init: 1000};
+        var phCdS2DAP12_2_pzap70_Shc: nm {init: 0};
+        var phCdS2DAP12_2_pzap70_ShP: nm {init: 0};
+        var ShP: nm {init: 0};
+        var phCdS2DAP12_2_pzap70_ShGS: nm {init: 0};
+        var ShGS: nm {init: 0, pub: out};
+        var GS: nm {init: 10};
+        var two: dimensionless {init: 2};-->
+        <!--  J2 = kf2*hCdS2*DAP12-kb2*hCdS2DAP12;-->
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>J3</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf3</ci>
+                        <ci>hCdS2DAP12</ci>
+                        <ci>plck</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb3</ci>
+                        <ci>phCdS2DAP12</ci>
+                        <ci>lck</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J4</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf4</ci>
+                        <ci>phCdS2DAP12</ci>
+                        <ci>zap70</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb4</ci>
+                        <ci>phCdS2DAP12_zap70</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J5</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf5</ci>
+                        <ci>phCdS2DAP12_zap70</ci>
+                        <ci>plck</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb5</ci>
+                        <ci>phCdS2DAP12_pzap70</ci>
+                        <ci>lck</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J6</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf6</ci>
+                        <ci>phCdS2DAP12_pzap70</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb6</ci>
+                        <ci>phCdS2DAP12</ci>
+                        <ci>pzap70</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J7</ci>
+                <apply>
+                    <times/>
+                    <ci>kf7</ci>
+                    <ci>phCdS2DAP12_pzap70</ci>
+                </apply>
+            </apply>
+            <!-- J8 = kf8*phCdS2DAP12_2_pzap70*Shc-kb8*phCdS2DAP12_2_pzap70_Shc;
+  J9 = kf9*phCdS2DAP12_2_pzap70_Shc-kb9*phCdS2DAP12_2_pzap70_ShP;
+  J10 = kf10*phCdS2DAP12_2_pzap70_ShP-kb10*phCdS2DAP12_2_pzap70_ShGS;
+   J11 = kf11*phCdS2DAP12_2_pzap70_ShP-kb11*ShGS*phCdS2DAP12_2_pzap70;
+   J12 = kf12*ShGS-kb12*GS*ShP;-->
+            <!--/J13 = V13*ShP/(k13+ShP);-->
+            <!--ode(DAP12, time) = -J2;
+ode(hCdS2DAP12, time) = J2-J3;-->
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J3</ci>
+                    <ci>J4</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12_zap70</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J4</ci>
+                    <ci>J5</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12_pzap70</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <minus/>
+                        <ci>J5</ci>
+                        <ci>J6</ci>
+                    </apply>
+                    <ci>J7</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>pzap70</ci>
+                </apply>
+                <ci>J6</ci>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12_2_pzap70</ci>
+                </apply>
+                <ci>J7</ci>
+            </apply>
+        </math>
+        <!--+J11;
+    ode(phCdS2DAP12_2_pzap70_Shc, time) = J8-J9;-->
+        <!-- ode(Shc, time) = -J8+J13;
+  ode(phCdS2DAP12_2_pzap70_ShP, time) = J9-J10;
+ode(GS, time) = -J10+J12;
+ ode(ShP, time) = J12-J13;
+  ode(phCdS2DAP12_2_pzap70_ShGS, time) = J10-J11;
+ ode(ShGS, time) = J11-J12;-->
+    </component>
+    <connection>
+        <map_components component_1="environment" component_2="DAP12"/>
+        <map_variables variable_1="time" variable_2="time"/>
+    </connection>
+</model>

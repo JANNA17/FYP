@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model name="HC_ACTIVATING" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#">
+    <!--  def import using "main1.cellml" for
+      comp ds2cytokines_parameter using comp ds2cytokines_parameter;
+  enddef;-->
+    <!--
+        *******************************************************
+        ***         U   N   I   T   S                       ***
+        *******************************************************
+-->
+    <units name="s">
+        <unit units="second"/>
+    </units>
+    <units name="nm">
+        <unit prefix="nano" units="mole"/>
+        <unit exponent="-1" units="litre"/>
+    </units>
+    <units name="flux">
+        <unit units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="second_order_rate_constant">
+        <unit exponent="-1" units="nm"/>
+        <unit exponent="-1" units="s"/>
+    </units>
+    <units name="first_order_rate_constant">
+        <unit exponent="-1" units="s"/>
+    </units>
+    <component name="environment">
+        <variable name="time" public_interface="out" units="s"/>
+    </component>
+    <component name="hCactivating">
+        <variable name="time" public_interface="in" units="second"/>
+        <variable name="kf1" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kb1" public_interface="in" units="first_order_rate_constant"/>
+        <variable initial_value="105.2" name="hC" public_interface="out" units="nm"/>
+        <variable initial_value="98" name="dS2" units="nm"/>
+        <variable initial_value="0" name="hCdS2" public_interface="out" units="nm"/>
+        <variable name="J1" public_interface="out" units="flux"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>J1</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf1</ci>
+                        <ci>hC</ci>
+                        <ci>dS2</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb1</ci>
+                        <ci>hCdS2</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>hC</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J1</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>dS2</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J1</ci>
+                </apply>
+            </apply>
+        </math>
+    </component>
+    <connection>
+        <map_components component_1="hCactivating" component_2="environment"/>
+        <map_variables variable_1="time" variable_2="time"/>
+    </connection>
+    <!--    def map between hCactivating and ds2cytokines_parameter for
+        vars kf1 and kf1;
+        vars kb1 and kb1;
+    enddef;-->
+</model>
