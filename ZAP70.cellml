@@ -238,18 +238,8 @@ ode(hCdS2DAP12, time) = J2-J3;-->
                 </apply>
                 <ci>J6</ci>
             </apply>
-            <apply>
-                <eq/>
-                <apply>
-                    <diff/>
-                    <bvar>
-                        <ci>time</ci>
-                    </bvar>
-                    <ci>phCdS2DAP12_2_pzap70</ci>
-                </apply>
-                <ci>J7</ci>
-            </apply>
         </math>
+        <!--      ode(phCdS2DAP12_2_pzap70, time) = J7;-->
         <!--+J11;
     ode(phCdS2DAP12_2_pzap70_Shc, time) = J8-J9;-->
         <!-- ode(Shc, time) = -J8+J13;

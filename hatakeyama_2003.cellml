@@ -81,12 +81,12 @@
         <variable initial_value="50" name="k4" units="nm"/>
         <variable name="kf5" public_interface="in" units="second_order_rate_constant"/>
         <variable name="kb5" public_interface="in" units="first_order_rate_constant"/>
-        <variable initial_value="20" name="kf6" units="first_order_rate_constant"/>
-        <variable initial_value="5" name="kb6" units="first_order_rate_constant"/>
-        <variable initial_value="60" name="kf7" units="second_order_rate_constant"/>
-        <variable initial_value="546" name="kb7" units="first_order_rate_constant"/>
-        <variable initial_value="2040" name="kf8" units="first_order_rate_constant"/>
-        <variable initial_value="15700" name="kb8" units="second_order_rate_constant"/>
+        <variable initial_value="20" name="kf6" public_interface="out" units="first_order_rate_constant"/>
+        <variable initial_value="5" name="kb6" public_interface="out" units="first_order_rate_constant"/>
+        <variable initial_value="60" name="kf7" public_interface="out" units="second_order_rate_constant"/>
+        <variable initial_value="546" name="kb7" public_interface="out" units="first_order_rate_constant"/>
+        <variable initial_value="2040" name="kf8" public_interface="out" units="first_order_rate_constant"/>
+        <variable initial_value="15700" name="kb8" public_interface="out" units="second_order_rate_constant"/>
         <variable initial_value="40.8" name="kf9" units="first_order_rate_constant"/>
         <variable initial_value="0" name="kb9" units="second_order_rate_constant"/>
         <variable initial_value="0.0154" name="V10" units="flux"/>
@@ -100,22 +100,28 @@
         <variable initial_value="2620" name="V26" units="flux"/>
         <variable initial_value="3680" name="k26" units="nm"/>
         <variable cmeta:id="PI3K_R" initial_value="79.6" name="R" units="nm"/>
-        <variable initial_value="1060" name="Shc" units="nm"/>
-        <variable cmeta:id="PI3K_PI3K" initial_value="8.16" name="PI3K" units="nm"/>
+        <!--var Shc: nm {init: 1060};-->
+        <variable name="Shc" public_interface="in" units="nm"/>
+        <!--  var{PI3K_PI3K} PI3K: nm {init: 8.16};-->
+        <variable cmeta:id="PI3K_PI3K" name="PI3K" public_interface="in" units="nm"/>
         <variable cmeta:id="PI3K_HRG" initial_value="330" name="HRG" units="nm"/>
         <variable cmeta:id="PI3K_R_HRG" initial_value="0" name="R_HRG" units="nm"/>
         <variable initial_value="0" name="R_HRG2" units="nm"/>
         <variable initial_value="0" name="Internalisation" units="nm"/>
-        <variable cmeta:id="PI3K_RP" initial_value="0" name="RP" units="nm"/>
+        <variable cmeta:id="PI3K_RP" initial_value="0" name="RP" public_interface="out" units="nm"/>
         <variable cmeta:id="PI3K_R_Shc" initial_value="0" name="R_Shc" units="nm"/>
         <variable cmeta:id="PI3K_R_ShP" initial_value="0" name="R_ShP" units="nm"/>
-        <variable cmeta:id="PI3K_ShP" initial_value="0" name="ShP" public_interface="out" units="nm"/>
+        <!--  var{PI3K_ShP} ShP: nm {init: 0, pub: out};-->
+        <variable cmeta:id="PI3K_ShP" name="ShP" public_interface="in" units="nm"/>
         <variable cmeta:id="PI3K_R_ShGS" initial_value="0" name="R_ShGS" units="nm"/>
-        <variable cmeta:id="PI3K_ShGS" initial_value="0" name="ShGS" public_interface="out" units="nm"/>
-        <variable cmeta:id="PI3K_GS" initial_value="10.5" name="GS" units="nm"/>
+        <!--  var{PI3K_ShGS} ShGS: nm {init: 0, pub: out};-->
+        <variable cmeta:id="PI3K_ShGS" name="ShGS" public_interface="in" units="nm"/>
+        <!--var{PI3K_GS} GS: nm {init: 10.5};-->
+        <variable cmeta:id="PI3K_GS" name="GS" public_interface="in" units="nm"/>
         <variable cmeta:id="PI3K_R_PI3K" initial_value="0" name="R_PI3K" units="nm"/>
         <variable cmeta:id="PI3K_R_PI3Kstar" initial_value="0" name="R_PI3Kstar" units="nm"/>
-        <variable initial_value="0" name="PI3Kstar" public_interface="out" units="nm"/>
+        <!--   var PI3Kstar: nm {init: 0, pub: out};-->
+        <variable name="PI3Kstar" public_interface="in" units="nm"/>
         <variable initial_value="2" name="two" units="dimensionless"/>
         <variable name="RP_normalised" public_interface="out" units="nm"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -460,49 +466,7 @@
                     </apply>
                 </apply>
             </apply>
-            <apply>
-                <eq/>
-                <apply>
-                    <diff/>
-                    <bvar>
-                        <ci>time</ci>
-                    </bvar>
-                    <ci>Shc</ci>
-                </apply>
-                <apply>
-                    <plus/>
-                    <apply>
-                        <minus/>
-                        <apply>
-                            <minus/>
-                            <apply>
-                                <times/>
-                                <ci>kf5</ci>
-                                <ci>RP</ci>
-                                <ci>Shc</ci>
-                            </apply>
-                            <apply>
-                                <times/>
-                                <ci>kb5</ci>
-                                <ci>R_Shc</ci>
-                            </apply>
-                        </apply>
-                    </apply>
-                    <apply>
-                        <divide/>
-                        <apply>
-                            <times/>
-                            <ci>V10</ci>
-                            <ci>ShP</ci>
-                        </apply>
-                        <apply>
-                            <plus/>
-                            <ci>k10</ci>
-                            <ci>ShP</ci>
-                        </apply>
-                    </apply>
-                </apply>
-            </apply>
+            <!--        ode(Shc, time) = -(kf5*RP*Shc-kb5*R_Shc)+V10*ShP/(k10+ShP);-->
             <apply>
                 <eq/>
                 <apply>
@@ -668,47 +632,7 @@
                     </apply>
                 </apply>
             </apply>
-            <apply>
-                <eq/>
-                <apply>
-                    <diff/>
-                    <bvar>
-                        <ci>time</ci>
-                    </bvar>
-                    <ci>ShGS</ci>
-                </apply>
-                <apply>
-                    <minus/>
-                    <apply>
-                        <minus/>
-                        <apply>
-                            <times/>
-                            <ci>kf8</ci>
-                            <ci>R_ShGS</ci>
-                        </apply>
-                        <apply>
-                            <times/>
-                            <ci>kb8</ci>
-                            <ci>ShGS</ci>
-                            <ci>RP</ci>
-                        </apply>
-                    </apply>
-                    <apply>
-                        <minus/>
-                        <apply>
-                            <times/>
-                            <ci>kf9</ci>
-                            <ci>ShGS</ci>
-                        </apply>
-                        <apply>
-                            <times/>
-                            <ci>kb9</ci>
-                            <ci>GS</ci>
-                            <ci>ShP</ci>
-                        </apply>
-                    </apply>
-                </apply>
-            </apply>
+            <!--        ode(ShGS, time) = kf8*R_ShGS-kb8*ShGS*RP-(kf9*ShGS-kb9*GS*ShP);-->
             <apply>
                 <eq/>
                 <apply>

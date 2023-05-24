@@ -58,6 +58,8 @@
         <variable initial_value="7.6167e-3" name="kb6" public_interface="out" units="second_order_rate_constant"/>
         <variable initial_value="0.002" name="kf7" public_interface="out" units="second_order_rate_constant"/>
         <variable name="pzap70" public_interface="in" units="nm"/>
+        <!--   var Shc: nm {init: 1060, pub: out};-->
+        <variable name="phCdS2DAP12_2_pzap70" public_interface="in" units="nm"/>
         <variable cmeta:id="PI3K_ShGS" name="ShP" public_interface="in" units="nm"/>
         <variable cmeta:id="PI3K_ShGS" name="ShGS" public_interface="in" units="nm"/>
         <variable cmeta:id="RasGDPtoRasGTP_RasGTP" name="RasGTP" public_interface="in" units="nm"/>
@@ -143,15 +145,43 @@
             </apply>
         </math>
     </component>
-    <component name="SHC">
+    <component name="TNF">
         <variable name="time" public_interface="in" units="s"/>
-        <variable initial_value="1060" name="Shc" units="nm"/>
-        <variable initial_value="0" name="phCdS2DAP12_2_pzap70" units="nm"/>
-        <variable initial_value="0" name="phCdS2DAP12_2_pzap70_Shc" public_interface="out" units="nm"/>
-        <variable initial_value="0.1" name="kf35" units="second_order_rate_constant"/>
-        <variable initial_value="1" name="kb35" units="first_order_rate_constant"/>
-        <variable name="J35" units="flux"/>
+        <!-- var ERKPP: nm {pub: in};-->
+        <variable name="ERKPP_normalised" public_interface="in" units="nm"/>
+        <variable name="MEKPP" public_interface="in" units="nm"/>
+        <variable name="ERKPP_n" public_interface="in" units="nm"/>
+        <variable name="RAF_star" public_interface="in" units="nm"/>
+        <variable initial_value="981.8249" name="kf29" public_interface="out" units="first_order_rate_constant"/>
+        <variable initial_value="0.0291491" name="kf31" public_interface="out" units="first_order_rate_constant"/>
+        <!-- var kf14: first_order_rate_constant {pub: in};-->
+        <variable name="TNF" public_interface="in" units="nm"/>
+    </component>
+    <component name="R_SHC">
+        <variable name="time" public_interface="in" units="s"/>
+        <variable initial_value="0.1" name="kf" units="second_order_rate_constant"/>
+        <variable initial_value="1" name="kb" units="first_order_rate_constant"/>
+        <variable name="kf6" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kb6" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kf7" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="kb7" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kf8" public_interface="in" units="first_order_rate_constant"/>
+        <variable name="kb8" public_interface="in" units="second_order_rate_constant"/>
+        <variable name="phCdS2DAP12_2_pzap70" public_interface="in" units="nm"/>
+        <variable initial_value="1060" name="Shc" public_interface="out" units="nm"/>
+        <variable cmeta:id="PI3K_PI3K" initial_value="8.16" name="PI3K" public_interface="out" units="nm"/>
+        <variable cmeta:id="PI3K_ShP" initial_value="0" name="ShP" public_interface="out" units="nm"/>
+        <variable cmeta:id="PI3K_ShGS" initial_value="0" name="ShGS" public_interface="out" units="nm"/>
+        <variable cmeta:id="PI3K_GS" initial_value="10.5" name="GS" public_interface="out" units="nm"/>
+        <variable initial_value="0" name="PI3Kstar" public_interface="out" units="nm"/>
         <variable name="J7" public_interface="in" units="flux"/>
+        <variable name="J35" units="flux"/>
+        <variable name="J36" units="flux"/>
+        <variable name="J37" units="flux"/>
+        <variable name="J38" units="flux"/>
+        <variable initial_value="0" name="phCdS2DAP12_2_pzap70_Shc" public_interface="out" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12_2_pzap70_ShP" public_interface="out" units="nm"/>
+        <variable initial_value="0" name="phCdS2DAP12_2_pzap70_ShGS" public_interface="out" units="nm"/>
         <math xmlns="http://www.w3.org/1998/Math/MathML">
             <apply>
                 <eq/>
@@ -160,30 +190,68 @@
                     <minus/>
                     <apply>
                         <times/>
-                        <ci>kf35</ci>
-                        <ci>J7</ci>
+                        <ci>kf</ci>
                         <ci>Shc</ci>
+                        <ci>J7</ci>
                     </apply>
                     <apply>
                         <times/>
-                        <ci>kb35</ci>
+                        <ci>kb</ci>
                         <ci>phCdS2DAP12_2_pzap70_Shc</ci>
                     </apply>
                 </apply>
             </apply>
             <apply>
                 <eq/>
-                <apply>
-                    <diff/>
-                    <bvar>
-                        <ci>time</ci>
-                    </bvar>
-                    <ci>phCdS2DAP12_2_pzap70</ci>
-                </apply>
+                <ci>J36</ci>
                 <apply>
                     <minus/>
-                    <ci>J7</ci>
-                    <ci>J35</ci>
+                    <apply>
+                        <times/>
+                        <ci>kf6</ci>
+                        <ci>phCdS2DAP12_2_pzap70_Shc</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb6</ci>
+                        <ci>phCdS2DAP12_2_pzap70_ShP</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J37</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf7</ci>
+                        <ci>phCdS2DAP12_2_pzap70_ShP</ci>
+                        <ci>GS</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb7</ci>
+                        <ci>phCdS2DAP12_2_pzap70_ShGS</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>J38</ci>
+                <apply>
+                    <minus/>
+                    <apply>
+                        <times/>
+                        <ci>kf8</ci>
+                        <ci>phCdS2DAP12_2_pzap70_ShGS</ci>
+                    </apply>
+                    <apply>
+                        <times/>
+                        <ci>kb8</ci>
+                        <ci>ShGS</ci>
+                        <ci>phCdS2DAP12_2_pzap70</ci>
+                    </apply>
                 </apply>
             </apply>
             <apply>
@@ -207,23 +275,71 @@
                     <bvar>
                         <ci>time</ci>
                     </bvar>
+                    <ci>phCdS2DAP12_2_pzap70</ci>
+                </apply>
+                <apply>
+                    <plus/>
+                    <apply>
+                        <minus/>
+                        <ci>J7</ci>
+                        <ci>J35</ci>
+                    </apply>
+                    <ci>J38</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
                     <ci>phCdS2DAP12_2_pzap70_Shc</ci>
                 </apply>
-                <ci>J35</ci>
+                <apply>
+                    <minus/>
+                    <ci>J35</ci>
+                    <ci>J36</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12_2_pzap70_ShP</ci>
+                </apply>
+                <apply>
+                    <minus/>
+                    <ci>J36</ci>
+                    <ci>J37</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>phCdS2DAP12_2_pzap70_ShGS</ci>
+                </apply>
+                <ci>J37</ci>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>ShGS</ci>
+                </apply>
+                <ci>J38</ci>
             </apply>
         </math>
-    </component>
-    <component name="TNF">
-        <variable name="time" public_interface="in" units="s"/>
-        <!-- var ERKPP: nm {pub: in};-->
-        <variable name="ERKPP_normalised" public_interface="in" units="nm"/>
-        <variable name="MEKPP" public_interface="in" units="nm"/>
-        <variable name="ERKPP_n" public_interface="in" units="nm"/>
-        <variable name="RAF_star" public_interface="in" units="nm"/>
-        <variable initial_value="981.8249" name="kf29" public_interface="out" units="first_order_rate_constant"/>
-        <variable initial_value="0.0291491" name="kf31" public_interface="out" units="first_order_rate_constant"/>
-        <!-- var kf14: first_order_rate_constant {pub: in};-->
-        <variable name="TNF" public_interface="in" units="nm"/>
     </component>
     <connection>
         <map_components component_1="environment" component_2="hC_DAP12"/>
@@ -270,7 +386,7 @@
         <map_variables variable_1="time" variable_2="time"/>
     </connection>
     <connection>
-        <map_components component_1="SHC" component_2="environment"/>
+        <map_components component_1="R_SHC" component_2="environment"/>
         <map_variables variable_1="time" variable_2="time"/>
     </connection>
     <connection>
@@ -325,10 +441,27 @@
         <map_variables variable_1="kb6" variable_2="kb6"/>
         <map_variables variable_1="kf7" variable_2="kf7"/>
         <map_variables variable_1="pzap70" variable_2="pzap70"/>
+        <map_variables variable_1="phCdS2DAP12_2_pzap70" variable_2="phCdS2DAP12_2_pzap70"/>
     </connection>
     <connection>
-        <map_components component_1="DAP12" component_2="SHC"/>
+        <map_components component_1="DAP12" component_2="R_SHC"/>
         <map_variables variable_1="J7" variable_2="J7"/>
+        <map_variables variable_1="phCdS2DAP12_2_pzap70" variable_2="phCdS2DAP12_2_pzap70"/>
+    </connection>
+    <connection>
+        <map_components component_1="PI3K" component_2="R_SHC"/>
+        <map_variables variable_1="PI3K" variable_2="PI3K"/>
+        <map_variables variable_1="Shc" variable_2="Shc"/>
+        <map_variables variable_1="ShGS" variable_2="ShGS"/>
+        <map_variables variable_1="ShP" variable_2="ShP"/>
+        <map_variables variable_1="GS" variable_2="GS"/>
+        <map_variables variable_1="PI3Kstar" variable_2="PI3Kstar"/>
+        <map_variables variable_1="kf8" variable_2="kf8"/>
+        <map_variables variable_1="kb8" variable_2="kb8"/>
+        <map_variables variable_1="kf7" variable_2="kf7"/>
+        <map_variables variable_1="kb7" variable_2="kb7"/>
+        <map_variables variable_1="kf6" variable_2="kf6"/>
+        <map_variables variable_1="kb6" variable_2="kb6"/>
     </connection>
     <connection>
         <map_components component_1="RAF" component_2="ds2cytokines_parameter"/>
@@ -353,7 +486,13 @@
         <map_variables variable_1="ShP" variable_2="ShP"/>
         <map_variables variable_1="ShGS" variable_2="ShGS"/>
     </connection>
-    <!--   def map between PI3K and SHC for
-     vars Shc and Shc;
-  enddef;-->
+    <group>
+        <relationship_ref relationship="encapsulation"/>
+        <component_ref component="geometry">
+            <component_ref component="PI3K"/>
+            <component_ref component="RAF"/>
+            <component_ref component="Akt"/>
+            <component_ref component="ERK"/>
+        </component_ref>
+    </group>
 </model>
